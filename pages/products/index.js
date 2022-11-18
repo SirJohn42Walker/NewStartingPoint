@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState(null); //"Food", "Technology"
-
+  console.log(products);
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -29,6 +29,46 @@ const Products = () => {
     };
     getProducts();
   }, [categoryFilter]);
+
+  async function deleteProduct(idToDelete) {
+    try {
+      const url = `/api/products/` + idToDelete;
+      const response = await fetch(url, { method: "DELETE" });
+      if (response.ok) {
+        const data = await response.json();
+        setProducts(products.filter((product) => product._id !== data._id));
+      } else {
+        throw new Error(`Fetch fehlgeschlagen mit Status: ${response.status}`);
+      }
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
+    }
+  }
+
+  async function createProduct(event) {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.target));
+    const newProduct = {
+      name: data.name,
+      category: data.category,
+      detail: data.detail,
+    };
+    try {
+      const url = `/api/products/`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newProduct),
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
+    }
+  }
 
   return (
     <>
@@ -58,10 +98,25 @@ const Products = () => {
             return (
               <li key={product._id}>
                 <Link href={`/products/${product._id}`}>{product.name}</Link>
+                <button onClick={() => deleteProduct(product._id)}>
+                  DELETE
+                </button>
               </li>
             );
           })}
         </ul>
+        <form onSubmit={createProduct}>
+          <label htmlFor="name">Name</label>
+          <input id="name" name="name" type="text" required />
+          <br />
+          <label htmlFor="category">Category</label>
+          <input id="category" name="category" type="text" required />
+          <br />
+          <label htmlFor="detail">Details</label>
+          <input id="detail" name="detail" type="text" />
+          <br />
+          <button type="submit">SUB! MIT!</button>
+        </form>
       </div>
     </>
   );

@@ -13,5 +13,25 @@
     "name": "iPhone",
     "category": "Technology",
     "detail": "Top Produkt"
+  },
+  {
+    "name": "Staubsauger",
+    "category": "Technology",
+    "detail": "Katzen werden ihn hassen"
+  },
+  {
+    "name": "Kiwi",
+    "category": "Food",
+    "detail": "Gut zum Einschlafen"
+  },
+  {
+    "name": "Motorrad",
+    "category": "Technology",
+    "detail": "Echt schnell"
+  },
+  {
+    "name": "Erdnuss",
+    "category": "Food",
+    "detail": "Nicht wirklich eine Nuss"
   }
 ]
